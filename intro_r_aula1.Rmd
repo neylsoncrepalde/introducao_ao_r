@@ -135,8 +135,63 @@ class(logicos)
 is.numeric(logicos) # o vetor "logicos" é numeric?
 ```
 
+### Sequências
+Sequências são bastante úteis em programação. Podemos criá-las de algumas maneiras no R:
+```{r}
+1:10
+4:40
+2.5:9
+7:-7
+```
+
+A função `seq()` permite algumas opções mais elaboradas:
+```{r}
+seq(from=15, to=30)
+seq(from=15, to=30, by=3)
+seq(from=15, to=30, by= 0.5)
+seq(from=15, to=30, length=10) #tamanho da sequência definida
+seq(from=15, to=5, by=-.5)
+```
+
+Podemos ainda criar repetições com a função `rep()`:
+```{r}
+rep(1:3, times=10)
+rep(1:3, each=10)
+```
+
+### Missing data
+No `R` o valor *missing*, ou **não resposta** é representado por `NA`.
+```{r}
+x = c(1,3,NA,6,10)
+X
+class(x)
+is.na(x) #No vetor x há um NA?
+is.nan(x) #No vetor x há um NaN (not a number)?
+```
+Veja bem que NaN (*not a number*) é um caso especial de *missing values*.
+
+```{r}
+0/0
+is.na(0/0)
+is.nan(0/0)
+```
 
 
+### Matrizes
+
+Matrizes são objetos que assumem duas dimensões, ou seja, vetores organizados em linhas e colunas.
+Podemos criar uma matriz no `R` com o comando `matrix()` e definindo o número de linhas e colunas:
+```{r}
+matrix(1:40, nrow = 10, ncol = 4)
+matrix(1:40, nrow = 10, ncol = 4, byrow = T)
+```
+
+Podemos também fazer operações com matrizes:
+```{r}
+X <- matrix(c(1,2,3,4), 4, 4)
+sqrt(X)
+X^2
+```
 
 ?matrix
 x=matrix(data=c(1,2,3,4), nrow=2, ncol=2)
