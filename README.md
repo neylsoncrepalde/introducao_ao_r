@@ -1,2 +1,2 @@
-# introducao_ao_r
-Curso de Introdução ao R no MQuinho
+# Introdução ao R
+Aqui estão os códigos em R Markdown das aulas ministradas no curso de **Introdução ao R** do MQuinho 2016.
