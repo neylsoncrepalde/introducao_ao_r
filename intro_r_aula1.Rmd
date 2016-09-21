@@ -1,0 +1,211 @@
+---
+title: "Introdução ao R - Aula 1"
+author: "Neylson Crepalde"
+date: "26 de setembro de 2016"
+output: html_document
+---
+# Comandos básicos
+Usando o R como calculadora
+```{r}
+5 + 5
+16-32
+7*5
+9/3
+```
+
+Resto da divisão
+```{r}
+10%%3
+```
+
+### Raiz e potência
+A maioria dos comandos no R tem esse formato: comando(). Para tirar a raiz usamos o comando `sqrt()`
+```{r}
+sqrt(49)
+4^2
+5^5
+```
+
+Raiz cúbica
+```{r}
+27^(1/3)
+```
+
+Exponencial e log natural(base e)
+```{r}
+exp(4.5)
+log(90)
+```
+## Linguagem de programação orientada a objetos
+```{r}
+x <- 5
+y = 7
+```
+
+Podemos fazer também operações com objetos
+```{r}
+x+y
+x*y
+z = 2*x + y^2
+z
+```
+
+### Trabalhando com vetores
+O comando **c()** significa *concatenar*, ou seja, juntar os valores.
+```{r}
+x <- c(1,3,2,5)
+x
+x = c(1,6,2)
+x
+y = c(1,4,3)
+```
+
+Verificando o tamanho do vetor
+```{r}
+length(x)
+length(y)
+```
+
+Operações com vetores
+
+```{r}
+x+y
+x-y
+x*y
+x/y
+```
+
+Outros comandos úteis:
+```{r}
+ls() #este comando lista os objetos no ambiente
+rm(x,y) #este comando remove objetos
+ls()
+rm(list=ls()) # para limpar tudo no ambiente
+ls()
+```
+
+
+## Classes de vetores7
+
+Para descobrir a classe de um vetor, usamos o comando `class()`
+```{r}
+numeros <- c(13,15,24,17,12)
+nomes <- c("Neylson","Ítalo","Silvio","Rogério","Marcelo")
+
+class(numeros) # vetor numérico
+class(nomes) # vetor de texto ou string
+
+inteiros <- c(5L, 7L, 45L, 9L, 2L)
+class(inteiros) # vetor de números inteiros
+
+#podemos converter um vetor numérico para um vetor de inteiros
+peso <- c(60.45, 78.9, 45.7, 98.654, 69.324)
+class(peso)
+
+as.integer(peso) 
+```
+
+## Trabalhando com vetores character (INTRO)
+```{r}
+paste("Eu","gosto","de","pão","de","queijo!")
+paste0("Ês", "pens","cu","ons","é","dês")
+```
+
+
+
+
+?matrix
+x=matrix(data=c(1,2,3,4), nrow=2, ncol=2)
+x
+x=matrix(c(1,2,3,4),2,2)
+matrix(c(1,2,3,4),2,2,byrow=TRUE)
+sqrt(x)
+x^2
+x=rnorm(50)
+y=x+rnorm(50,mean=50,sd=.1)
+cor(x,y)
+set.seed(1303)
+rnorm(50)
+set.seed(3)
+y=rnorm(100)
+mean(y)
+var(y)
+sqrt(var(y))
+sd(y)
+
+# Graphics
+
+x=rnorm(100)
+y=rnorm(100)
+plot(x,y)
+plot(x,y,xlab="this is the x-axis",ylab="this is the y-axis",main="Plot of X vs Y")
+pdf("Figure.pdf")
+plot(x,y,col="green")
+dev.off()
+x=seq(1,10)
+x
+x=1:10
+x
+x=seq(-pi,pi,length=50)
+y=x
+f=outer(x,y,function(x,y)cos(y)/(1+x^2))
+contour(x,y,f)
+contour(x,y,f,nlevels=45,add=T)
+fa=(f-t(f))/2
+contour(x,y,fa,nlevels=15)
+image(x,y,fa)
+persp(x,y,fa)
+persp(x,y,fa,theta=30)
+persp(x,y,fa,theta=30,phi=20)
+persp(x,y,fa,theta=30,phi=70)
+persp(x,y,fa,theta=30,phi=40)
+
+# Indexing Data
+
+A=matrix(1:16,4,4)
+A
+A[2,3]
+A[c(1,3),c(2,4)]
+A[1:3,2:4]
+A[1:2,]
+A[,1:2]
+A[1,]
+A[-c(1,3),]
+A[-c(1,3),-c(1,3,4)]
+dim(A)
+
+# Loading Data
+
+Auto=read.table("Auto.data")
+fix(Auto)
+Auto=read.table("Auto.data",header=T,na.strings="?")
+fix(Auto)
+Auto=read.csv("Auto.csv",header=T,na.strings="?")
+fix(Auto)
+dim(Auto)
+Auto[1:4,]
+Auto=na.omit(Auto)
+dim(Auto)
+names(Auto)
+
+# Additional Graphical and Numerical Summaries
+
+plot(cylinders, mpg)
+plot(Auto$cylinders, Auto$mpg)
+attach(Auto)
+plot(cylinders, mpg)
+cylinders=as.factor(cylinders)
+plot(cylinders, mpg)
+plot(cylinders, mpg, col="red")
+plot(cylinders, mpg, col="red", varwidth=T)
+plot(cylinders, mpg, col="red", varwidth=T,horizontal=T)
+plot(cylinders, mpg, col="red", varwidth=T, xlab="cylinders", ylab="MPG")
+hist(mpg)
+hist(mpg,col=2)
+hist(mpg,col=2,breaks=15)
+pairs(Auto)
+pairs(~ mpg + displacement + horsepower + weight + acceleration, Auto)
+plot(horsepower,mpg)
+identify(horsepower,mpg,name)
+summary(Auto)
+summary(mpg)
