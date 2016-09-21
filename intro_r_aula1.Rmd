@@ -2,10 +2,12 @@
 title: "Introdução ao R - Aula 1"
 author: "Neylson Crepalde"
 date: "26 de setembro de 2016"
-output: html_document
+output: 
+  html_document:
+    highlight: tango
 ---
 # Comandos básicos
-Usando o R como calculadora
+Podemos usar o R como calculadora:
 ```{r}
 5 + 5
 16-32
@@ -37,9 +39,13 @@ exp(4.5)
 log(90)
 ```
 ## Linguagem de programação orientada a objetos
+
+O **R** é uma linguagem de programação orientada a objetos. Em linguagem muito coloquial, isso quer dizer que podemos atribuir números, textos e resultados a um objeto criado. Vamos construir um objeto chamado `x` com o valor 5 e um objeto `y` com o valor 7:
 ```{r}
 x <- 5
 y = 7
+x
+y
 ```
 
 Podemos fazer também operações com objetos
@@ -51,23 +57,27 @@ z
 ```
 
 ### Trabalhando com vetores
-O comando **c()** significa *concatenar*, ou seja, juntar os valores.
+O comando **c()** significa *concatenar*, ou seja, juntar os valores. Vamos construir um objeto `x` e atribuir a ele um vetor de números:
 ```{r}
 x <- c(1,3,2,5)
 x
+```
+
+Se eu atribuir outro vetor ao objeto `x`, ele será sobrescrito.
+```{r}
 x = c(1,6,2)
 x
 y = c(1,4,3)
+y
 ```
 
-Verificando o tamanho do vetor
+Podemos verificar o tamanho do vetor com o comando `length()`:
 ```{r}
 length(x)
 length(y)
 ```
 
-Operações com vetores
-
+### Operações com vetores
 ```{r}
 x+y
 x-y
@@ -85,7 +95,9 @@ ls()
 ```
 
 
-## Classes de vetores7
+## Classes de vetores
+
+Os vetores podem ser numéricos, inteiros, lógicos, ou *character*, isto é, vetores de texto.
 
 Para descobrir a classe de um vetor, usamos o comando `class()`
 ```{r}
@@ -106,9 +118,21 @@ as.integer(peso)
 ```
 
 ## Trabalhando com vetores character (INTRO)
+Uma função bastante útil para vetores numéricos é a `paste()`. Esta função junta os diversos componentes de um vetor separando-os com um espaço. Se quero que seja separada por outro elemento qualquer, uso a opção `sep`. A função `paste0()` não usa separador.
 ```{r}
 paste("Eu","gosto","de","pão","de","queijo!")
-paste0("Ês", "pens","cu","ons","é","dês")
+paste("Eu","gosto","de","pão","de","queijo!", sep = "|")
+paste0("Ês", "pens","cu","ons","é","dês") #Só os mineiros entenderão!
+```
+
+## Vetores Lógicos
+Vetores lógicos assumem apenas dois valores: `TRUE` e `FALSE`. Eles são importantes para testes no R.
+```{r}
+logicos <- c(T,F,F,T,T)
+class(logicos)
+5 > 3   # 5 é maior que 3?
+5 > 6   # 5 é maior que 6?
+is.numeric(logicos) # o vetor "logicos" é numeric?
 ```
 
 
