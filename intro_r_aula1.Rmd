@@ -57,7 +57,7 @@ z
 ```
 
 ### Trabalhando com vetores
-O comando **c()** significa *concatenar*, ou seja, juntar os valores. Vamos construir um objeto `x` e atribuir a ele um vetor de números:
+O comando `c()` significa *concatenar*, ou seja, juntar os valores. Vamos construir um objeto `x` e atribuir a ele um vetor de números:
 ```{r}
 x <- c(1,3,2,5)
 x
@@ -163,7 +163,7 @@ rep(1:3, each=10)
 No `R` o valor *missing*, ou **não resposta** é representado por `NA`.
 ```{r}
 x = c(1,3,NA,6,10)
-X
+x
 class(x)
 is.na(x) #No vetor x há um NA?
 is.nan(x) #No vetor x há um NaN (not a number)?
@@ -179,7 +179,8 @@ is.nan(0/0)
 
 ### Matrizes
 
-Matrizes são objetos que assumem duas dimensões, ou seja, vetores organizados em linhas e colunas.
+Matrizes são objetos que assumem duas dimensões, ou seja, vetores organizados em linhas e colunas. As matrizes podem armazenar dados de apenas um tipo. Esta é uma característica importante para lembrarmos.
+
 Podemos criar uma matriz no `R` com o comando `matrix()` e definindo o número de linhas e colunas:
 ```{r}
 matrix(1:40, nrow = 10, ncol = 4)
@@ -188,103 +189,121 @@ matrix(1:40, nrow = 10, ncol = 4, byrow = T)
 
 Podemos também fazer operações com matrizes:
 ```{r}
-X <- matrix(c(1,2,3,4), 4, 4)
+X <- matrix(21:40, 5, 4)
+X
+class(X)
 sqrt(X)
 X^2
 ```
 
-?matrix
-x=matrix(data=c(1,2,3,4), nrow=2, ncol=2)
-x
-x=matrix(c(1,2,3,4),2,2)
-matrix(c(1,2,3,4),2,2,byrow=TRUE)
-sqrt(x)
-x^2
-x=rnorm(50)
-y=x+rnorm(50,mean=50,sd=.1)
-cor(x,y)
-set.seed(1303)
-rnorm(50)
-set.seed(3)
-y=rnorm(100)
-mean(y)
-var(y)
-sqrt(var(y))
-sd(y)
+Para selecionar um elemento qualquer de uma matriz, usamos `[]`:
+```{r}
+X[10]
+class(X[10])
+```
 
-# Graphics
+Para selecionar por linhas e colunas use a fórmula `[linha , coluna]`.
+```{r}
+X[1,2]
+X[2,1]
+X[3,] # Linhas 3 inteira
+X[,4] # Coluna 4 inteira
+```
 
-x=rnorm(100)
-y=rnorm(100)
-plot(x,y)
-plot(x,y,xlab="this is the x-axis",ylab="this is the y-axis",main="Plot of X vs Y")
-pdf("Figure.pdf")
-plot(x,y,col="green")
-dev.off()
-x=seq(1,10)
-x
-x=1:10
-x
-x=seq(-pi,pi,length=50)
-y=x
-f=outer(x,y,function(x,y)cos(y)/(1+x^2))
-contour(x,y,f)
-contour(x,y,f,nlevels=45,add=T)
-fa=(f-t(f))/2
-contour(x,y,fa,nlevels=15)
-image(x,y,fa)
-persp(x,y,fa)
-persp(x,y,fa,theta=30)
-persp(x,y,fa,theta=30,phi=20)
-persp(x,y,fa,theta=30,phi=70)
-persp(x,y,fa,theta=30,phi=40)
+Para investigar as dimensões de uma matriz, usamos o comando `dim()`. `nrow()` e `ncol()` retornam o número de linhas e o número de colunas.
+```{r}
+dim(X)
+nrow(X)
+ncol(X)
+```
 
-# Indexing Data
+### Data Frames
 
-A=matrix(1:16,4,4)
-A
-A[2,3]
-A[c(1,3),c(2,4)]
-A[1:3,2:4]
-A[1:2,]
-A[,1:2]
-A[1,]
-A[-c(1,3),]
-A[-c(1,3),-c(1,3,4)]
-dim(A)
+Os *data frames* são os objetos do tipo **banco de dados** do R. Eles também são organizados em linhas e colunas mas, diferente das matrizes, os *data frames* podem conter colunas de diferentes classes. Uma coluna pode ser *numeric*, outra *character* e outra *integer*, por exemplo. Os *data frames* são, portanto, estruturas semelhantes aos bancos de dados convencionais usados em outros pacotes estatísticos como SPSS ou STATA onde as colunas são as variáveis e as linhas, os casos.
 
-# Loading Data
+Podemos criar um banco de dados com o comando `data.frame()`. É necessário dizer ao R o nome das variáveis:
+```{r}
+dados <- data.frame(Nomes=c("Antonio","Gilberto","Mauricio","Isabela"),
+                   Profissoes=c("Video Maker","Comerciante","Bancario","Estudante"),
+                   Cidades=c("Belo Horizonte","Sao Paulo","Belo Horizonte","Sao Paulo"),
+                   Idades=c(65,50,67,19),
+                   stringsAsFactors=F)
+dados
+```
 
-Auto=read.table("Auto.data")
-fix(Auto)
-Auto=read.table("Auto.data",header=T,na.strings="?")
-fix(Auto)
-Auto=read.csv("Auto.csv",header=T,na.strings="?")
-fix(Auto)
-dim(Auto)
-Auto[1:4,]
-Auto=na.omit(Auto)
-dim(Auto)
-names(Auto)
+Podemos selecionar itens específicos de cada *data frame* de várias maneiras.
+```{r}
+dados[4]
+class(dados[4]) # retorna um data.frame
+class(dados[[4]]) # [[]] retorna um numeric
+class(dados["Idades"]) # retorna um data.frame
+class(dados[["Idades"]]) # retorna um numeric
+class(dados$Idades) # Usando o operador $ retorna sempre um numeric
+```
 
-# Additional Graphical and Numerical Summaries
+Também podemos selecionar itens específicos de um *data frame*:
+```{r}
+dados[2,4] # linha 2, coluna 4
+dados[3,1] # linha 3, coluna 1
+dados[,2] # toda a coluna 2
+dados[3,] # toda a linha 3
+```
 
-plot(cylinders, mpg)
-plot(Auto$cylinders, Auto$mpg)
-attach(Auto)
-plot(cylinders, mpg)
-cylinders=as.factor(cylinders)
-plot(cylinders, mpg)
-plot(cylinders, mpg, col="red")
-plot(cylinders, mpg, col="red", varwidth=T)
-plot(cylinders, mpg, col="red", varwidth=T,horizontal=T)
-plot(cylinders, mpg, col="red", varwidth=T, xlab="cylinders", ylab="MPG")
-hist(mpg)
-hist(mpg,col=2)
-hist(mpg,col=2,breaks=15)
-pairs(Auto)
-pairs(~ mpg + displacement + horsepower + weight + acceleration, Auto)
-plot(horsepower,mpg)
-identify(horsepower,mpg,name)
-summary(Auto)
-summary(mpg)
+Podemos combinar essas formas de selecao:
+```{r}
+dados[["Idades"]][1]  #Primeiro elemento da variavel idade
+dados[["Idades"]][2:4]  # Elementos 2,3 e 4 da variavel idade
+```
+
+Podemos ainda especificar critérios de seleção. Neste exemplo, vamos extrair todos os casos em que a pessoa tenha mais de 30 anos:
+```{r}
+dados[dados$Idades>30,] # dados fazendo subsetting pelas linhas em que a variável Idades seja maior que 30
+```
+
+Para acrescentar novas informações aos bancos de dados, usamos os comandos `rbind()` para acrescentar linhas e `cbind()` para acrescentar colunas.
+```{r}
+rbind(dados, data.frame(Nomes="Fernando",Profissoes="Bancario", Cidades="Belo Horizonte",Idades=28))
+cbind(dados, Time=c("Cruzeiro","Galo Doido","Cruzeiro","Galo Doido"))
+```
+
+Podemos ainda criar uma matriz ou um *data frame* com os comandos `rbind()` e `cbind()` a partir de vetores. Por exemplo:
+```{r}
+pessoas = c("Neylson","Ítalo","Vicky","Mel","Leonardo")
+idades = c(29, 23, 21, 49, 27)
+grupos_pesquisa = c("GIARS","GIARS","GIARS","CPEQS","CPEQS")
+colegas <- cbind(pessoas, idades, grupos_pesquisa)
+colegas
+class(colegas)
+sapply(colegas, class) # aplica a função class para cada elemento da matriz
+colegas <- cbind.data.frame(pessoas, idades, grupos_pesquisa)
+colegas
+class(colegas)
+sapply(colegas, class) # aplica a função class para cada elemento do data.frame (colunas)
+```
+
+
+### Listas
+
+Uma lista é uma classe de objetos mais complexa do que o *data frame* porque pode conter quaisquer outras classes em sua composição. Podemos montar uma lista com um vetor numérico, um vetor character, uma matriz e um data.frame:
+```{r}
+lista <- list(numerico=c(4,6,78,9.5,3.465,1098), vetor_character=c("Márcio", "Cléber"),
+              matriz=matrix(101:200, 20, 5), 
+              bd = data.frame(nomes=c("César", "Daniel","Cecília"),
+                         idades=c(19,22,24),
+                         raca=c("Branco","Pardo","Preto"), stringsAsFactors = F))
+lista
+```
+
+Podemos fazer *subsetting* com listas do mesmo modo que fazemos com *data frames*:
+```{r}
+# Com colchetes simples
+class(lista[3])
+class(lista["matriz"])
+
+# Com colchetes duplas
+class(lista[[3]])
+class(lista[["matriz"]])
+
+# Subsettings mais precisos
+class(lista[[4]][2,1])
+```
