@@ -1,0 +1,51 @@
+---
+title: "Introdução ao R - Exercício 1"
+author: "Neylson Crepalde"
+date: "26 de setembro de 2016"
+output: html_document
+---
+
+Esses exercícios correspondem à aula 1. Você deve enviar por e-mail um script com os códigos comentados que geram as respostas corretas das questões. O e-mail deve ter o seguinte assunto: **MQuinho - Introdução ao R - Exercício 1**. Atenção! Data de entrega: **28 de setembro!**
+
+1) Execute cada um desses comandos no `R` e explique o que cada um faz num comentário.
+```{r, eval=F}
+7 * 9
+4 + 4
+x <- 3 - 10
+y = x + 8
+20 %% 3
+sqrt(256)
+45^2
+968^(1/3)
+exp(6)/log(156)
+```
+
+2) Crie dois vetores. 1 vetor chamado `nomes` com os nomes das pessoas que moram na sua casa e outro chamado `idades` com as idades de cada um deles.
+
+3) Use um comando para mostrar a classe desses vetores e um comando para verificar o tamanho dos vetores.
+
+4) Use um comando para juntar esses dois vetores como colunas e criar um `data.frame`. Verifique as medidas, o tamanho, do seu banco de dados.
+
+5) Com apenas um comando, crie cada um dos seguintes vetores:
+```{r, echo=F}
+seq(1:10)
+seq(from=2, to=20, by=2)
+seq(from=1, to=5, by=0.1)
+rep(1:3, 3)
+rep(1:3, each=5)
+```
+
+6) Com apenas um comando, crie cada uma das seguintes matrizes:
+```{r, echo=F}
+matrix(1:40, nrow = 10, ncol=4)
+matrix(1:40, nrow = 10, ncol=4, byrow = T)
+
+#Talvez você queira usar comandos aninhados para este aqui!
+matrix(seq(from=16, to=256, by=16), nrow=4)
+```
+
+7) Crie uma lista com o `data.frame` que você criou, a primeira matriz, um vetor numérico à sua escolha e um vetor de texto à sua escolha.
+
+### Divirta-se!
+
+
