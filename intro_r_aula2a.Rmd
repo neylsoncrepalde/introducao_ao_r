@@ -1,0 +1,155 @@
+---
+title: "Introdução ao R - Aula 2a"
+author: "Neylson Crepalde"
+date: "27 de setembro de 2016"
+output: 
+  html_document:
+    highlight: tango
+---
+
+## Análises preliminares
+
+Vamos analisar um banco de dados imbutido no `R` com dados de medidas de tamanho e espessura de pétalas e sépalas de 3 diferentes espécies de flores.
+
+```{r}
+options(scipen=999) # Tira a notação científica do tipo 2e-16
+data(iris)
+names(iris) # Retorna o nome das variáveis
+dim(iris) # Dimensões do banco de dados
+head(iris) # Mostra as primeiras colunas
+tail(iris) # Mostra as últimas colunas
+View(iris) # Visualizar o banco de dados completo
+```
+
+Vamos olhar primeiro para a classe de cada variável:
+```{r}
+class(iris[[1]])
+class(iris[[2]])
+class(iris[[3]])
+class(iris[[4]])
+class(iris[[5]])
+```
+
+As quatro primeiras variáveis são numéricas. A última é do tipo `factor`, uma classe que ainda não abordamos. Faremos isso mais adiante. Vamos nos concentrar agora em possibilidades de análises para dados do tipo numeric.
+
+Podemos pedir um conjunto de estatísticas descritivas dos dados com o comando `summary()`
+```{r}
+summary(iris)
+```
+
+Podemos usar o mesmo comando para tirar estatísticas descritivas de cada variável
+```{r}
+summary(iris$Sepal.Length)
+```
+
+ou pedir as estatísticas que nos interessam. Por exemplo:
+```{r}
+mean(iris$Sepal.Length) # Média
+median(iris$Sepal.Length) # Mediana
+var(iris$Sepal.Length) # Variância
+sd(iris$Sepal.Length) # Desvio Padrão
+max(iris$Sepal.Length) # Máximo
+min(iris$Sepal.Length) # Mínimo
+quantile(iris$Sepal.Length) # Quartis
+quantile(iris$Sepal.Length, probs =c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1)) # Decis
+```
+
+## Algumas estatísticas comuns
+
+Vamos investigar algumas relações entre essas variáveis. Primeiro, vamos tirar uma matriz de correlações.
+```{r}
+cor(iris[,1:4]) # Correlaciona as variáveis de 1 a 4
+cor(iris$Sepal.Length, iris$Petal.Length) # Correlação entre duas variáveis
+cor.test(iris$Sepal.Length, iris$Petal.Length) # Correlação com teste estatístico
+plot(iris$Sepal.Length, iris$Petal.Length) # produz um scatterplot
+```
+
+Podemos fazer algumas seleções (*subsettings*) em nossos dados caso queiramos investigar um grupo específico. Neste caso, vamos olhar para algumas estatísticas das flores pertencentes apenas ao grupo `virginica`.
+```{r}
+# Seleciono as linhas em que a variável Species é igual ao character "virginica"
+summary(iris[iris$Species == "virginica", ])
+# Seleciono apenas os casos da variável Petal.Length que pertençam ao grupo "virginica"
+mean(iris$Petal.Length[iris$Species == "virginica"]) 
+var(iris$Petal.Length[iris$Species == "virginica"])
+sd(iris$Petal.Length[iris$Species == "virginica"])
+```
+
+### Atenção!
+1) Veja que no caso de summary, usamos vírgula porque especificamos no *subsetting* linhas e colunas. Quando usamos os comandos `mean()`, `var()` e `sd()`, não usamos vírgula pois trata-se de vetores numéricos, ou seja, especificamos apenas posições.
+
+2) Para estabelecer uma relação de igualdade no R usamos `==` (igual, igual) pois `=` (igual) é um símbolo de atribuição (lembram?). Outros comparativos são `>` (maior que), `<` (menor que), `<=`, (menor ou igual), `>=` (maior ou igual), `!=` (diferente).
+
+Podemos fazer um teste de duas médias, ou teste **T de Student**. Testaremos se dois grupos tem médias estatisticamente diferentes ou não. Para isso, primeiro, vamos criar um novo objeto apenas com os dados de duas espécies. Veja bem que esse tipo de teste é feito quando se tem uma variável numérica e uma variável categórica **com duas categorias**. 
+```{r}
+# Selecionando as linhas em que Species seja DIFERENTE de "setosa". 
+dados <- iris[iris$Species != "setosa",]
+t.test(dados$Petal.Length~dados$Species)
+boxplot(dados$Petal.Length~dados$Species)
+```
+
+Neste caso, os grupos tem médias estatisticamente diferentes.
+
+Para testar se médias de mais de dois grupos são estatisticamente diferentes, use a **análise de variância**, ou ANOVA. Vamos testar se existe diferença estatística entre uma das médias da variável Petal.Length para os três grupos de espécies.
+```{r}
+summary(aov(iris$Petal.Length~iris$Species))
+```
+
+Neste caso, pelo menos 1 dos grupos tem média estatisticamente diferente dos demais.
+
+### Variáveis FACTOR
+
+As variáveis de classe `factor` são variáveis categóricas. Nessa classe, cada categoria tem um *label*. Podemos criar uma variável categórica entrando com os dados e definindo os labels, por exemplo:
+
+```{r}
+sexo <- factor(x = c("Feminino","Masculino","Feminino","Masculino","Feminino","Feminino"), 
+               levels = c("Feminino","Masculino"))
+sexo
+```
+
+Há uma função excelente implementada no pacote `descr` para tabela de frequências de uma variável categórica. Trata-se da função `freq()`. Para usá-la, primeiro, se ele não estiver instalado, podemos instalá-lo com o comando `install.packages()`. Segundo, precisamos carregar o pacote no ambiente.
+```{r, eval=F}
+install.packages("descr", dependencies = T) # Instala também as dependências do pacote.
+```
+
+```{r}
+library(descr)
+freq(sexo)
+```
+
+Vamos usar essa mesma função para analisar a variável Species do banco `iris`.
+```{r}
+freq(iris$Species)
+```
+
+Guarde esse comando. Ele é bastante útil.
+
+## Gráficos
+
+Visualização de dados não é algo trivial e há vários estudos interessantes sobre o assunto. Apresentarei aqui apenas algumas dicas básicas.
+
+Para visualizar a distribuição de uma variável, usamos um histograma.
+```{r}
+hist(iris$Petal.Length)
+```
+
+Podemos adicionar um *label* para o eixo x, para o eixo y, um título mais bonito e uma cor no gráfico para que ele fique um pouco mais simpático:
+```{r}
+hist(iris$Petal.Length, xlab = "Comprimento da Pétala", ylab="Frequência" ,main="Histograma do Comprimento da Pétala", col="green")
+```
+
+Para visualizar duas variáveis numéricas, podemos usar um *scatterplot* como fizemos acima.
+```{r}
+plot(iris$Petal.Length, iris$Sepal.Length)
+```
+
+Para visualizar diferenças de variáveis numéricas entre grupos, podemos usar *boxplots*.
+```{r}
+boxplot(iris$Petal.Length~iris$Species)
+```
+
+Podemos ainda plotar as frequências de uma variável categórica:
+```{r}
+barplot(table(iris$Species))
+```
+
+Veja que o comando `freq()` que utilizamos mais cedo já produz esse gráfico por *default*. 
