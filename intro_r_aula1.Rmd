@@ -3,8 +3,8 @@ title: "Introdução ao R - Aula 1"
 author: "Neylson Crepalde"
 date: "26 de setembro de 2016"
 output: 
-  html_document:
-    highlight: tango
+  github_document:
+    html_preview: FALSE
 ---
 # Comandos básicos
 Podemos usar o R como calculadora:
