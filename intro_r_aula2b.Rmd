@@ -139,7 +139,7 @@ pnad_semna <- na.omit(pnad) # tira NA's e guarda no objeto pnad_semna
 cor(cbind(pnad_semna$V4718, as.numeric(pnad_semna$V4803), pnad_semna$V8005))
 ```
 
-## Regressão linear -- Exemplo com ENADE 2014
+## Regressão linear - Exemplo com ENADE 2014
 
 Vamos montar um modelinho de regressão para tentar explicar o desempenho dos alunos no ENADE como função do sexo, da idade e da cor. Para isso, primeiro devemos verificar a distribuição da variável resposta.
 ```{r, warning=F, message=F}
