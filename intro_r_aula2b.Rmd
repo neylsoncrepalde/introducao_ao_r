@@ -173,11 +173,38 @@ A sintaxe do modelo de regressão funciona da seguinte forma:
 ```{r}
 # Montando o modelo
 modelo <- lm(nt_ger ~ tp_sexo + nu_idade + qe_i2, data=enade)
-summary(modelo) # apresenta o modelo
+summary(modelo) # apresenta os resultados do modelo
+```
 
+Podemos interpretar este modelo da seguinte forma:
+
+Homens não tem diferença estatisticamente significante das mulheres em relação à nota geral. Para cada 1 ano a mais de idade, a nota geral diminui, em média, 1.21 pontos. No caso da variável **Cor**, por se tratar de uma variável categórica, todos os coeficientes serão interpretados em relação à categoria de referência, a que foi retirada. Neste caso, negros tem, em média, uma nota 25.9 pontos menor que brancos; pardos tem, em média, uma nota 28.6 pontos menor que brancos, e indígenas tem, em média, uma nota -50 pontos menor que brancos mantendo-se todas as demais variáveis constantes. O coeficiente para a categoria amarelo não foi estatisticamente significativo, ou seja, a diferença entre as notas desse grupo e dos brancos é estatisticamente igual a 0.
+
+Agora vamos avaliar nosso modelo. O R nos dá alguns gráficos *default* de avaliação.
+
+```{r}
 # gráficos de avaliação
 plot(modelo)
+```
 
+Para realizar uma análise dos resíduos da regressão, podemos tirar um histograma. O comando `residuals()` extrai os resíduos de um modelo estatístico.
+
+```{r}
 # Histograma dos resíduos
 hist(residuals(modelo), col = "red")
+```
+
+Depois disso, podemos plotar a reta de regressão usando o comando `plot()` e o comando `abline()`. O comando `abline()` toma como argumentos o intercepto e a inclinação (coeficiente) da variável que desejamos plotar.
+
+```{r, warning=FALSE}
+# Plotando a reta de regressão
+coef(modelo) # verificando apenas os coeficientes do modelo
+plot(enade$nu_idade, enade$nt_ger, pch=19) # plotando as variáveis
+abline(a=448.8764, b=-1.2085, col="red", lwd = 2) #plotando uma reta com intercepto e slope
+
+# BONUS: o mesmo gráfico com ggplot2
+library(ggplot2)
+ggplot(enade, aes(nu_idade, nt_ger))+geom_point()+
+  geom_abline(intercept = 448.8764, slope = -1.2085, col="red", lwd=1)+
+  labs(title="Reta de regressão", x="Idade", y="Nota Geral")
 ```
